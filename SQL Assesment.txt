@@ -1,0 +1,47 @@
+SELECT * FROM USERS;
+SELECT * FROM PROGRESS;
+SELECT email_domain, COUNT(*) 
+FROM users
+WHERE email_domain LIKE '%.edu'
+GROUP BY email_domain;
+SELECT 
+	strftime('%H', sign_up_at) AS hour,
+	COUNT(*) AS sign_up_count
+FROM users
+GROUP BY hour
+ORDER BY hour;
+SELECT
+  u.email_domain,
+  SUM(CASE WHEN p.learn_cpp IS NOT NULL THEN 1 ELSE 0 END) AS cpp_learners,
+  SUM(CASE WHEN p.learn_sql IS NOT NULL THEN 1 ELSE 0 END) AS sql_learners,
+  SUM(CASE WHEN p.learn_html IS NOT NULL THEN 1 ELSE 0 END) AS html_learners,
+  SUM(CASE WHEN p.learn_javascript IS NOT NULL THEN 1 ELSE 0 END) AS javascript_learners,
+  SUM(CASE WHEN p.learn_java IS NOT NULL THEN 1 ELSE 0 END) AS java_learners
+FROM users u
+JOIN progress p ON u.user_id = p.user_id
+WHERE u.email_domain LIKE '%.edu'
+GROUP BY u.email_domain
+ORDER BY u.email_domain;
+SELECT u.city,
+       SUM(p.learn_cpp = 'completed') AS cpp,
+       SUM(p.learn_sql = 'completed') AS sql,
+       SUM(p.learn_html = 'completed') AS html,
+       SUM(p.learn_javascript = 'completed') AS javascript,
+       SUM(p.learn_java = 'completed') AS java
+FROM users u
+JOIN progress p ON u.user_id = p.user_id
+WHERE u.city = 'New York'
+GROUP BY u.city;
+SELECT u.city,
+       SUM(p.learn_cpp = 'completed') AS cpp,
+       SUM(p.learn_sql = 'completed') AS sql,
+       SUM(p.learn_html = 'completed') AS html,
+       SUM(p.learn_javascript = 'completed') AS javascript,
+       SUM(p.learn_java = 'completed') AS java
+FROM users u
+JOIN progress p ON u.user_id = p.user_id
+WHERE u.city = 'Chicago'
+GROUP BY u.city;
+
+
+
